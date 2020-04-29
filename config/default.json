@@ -1,4 +1,0 @@
-{
-	"mongoURI": "mongodb+srv://cs5190445:fec22f81@devconnector-d3p1i.mongodb.net/test?retryWrites=true&w=majority",
-	"jwtSecret": "theMatrixhasYouNeo125!@"
-}
