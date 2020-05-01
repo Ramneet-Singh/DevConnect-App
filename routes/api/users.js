@@ -6,6 +6,7 @@ const gravatar = require("gravatar")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const config = require("config")
+const normalize = require("normalize-url")
 
 // @route POST api/users
 // @desc Register user
@@ -44,11 +45,14 @@ router.post(
 			}
 
 			// Set avatar image
-			const avatar = gravatar.url(email, {
-				s: "200",
-				r: "pg",
-				d: "mm",
-			})
+			const avatar = normalize(
+				gravatar.url(email, {
+					s: "200",
+					r: "pg",
+					d: "mm",
+				}),
+				{ forceHttps: true }
+			)
 
 			user = new User({
 				name,

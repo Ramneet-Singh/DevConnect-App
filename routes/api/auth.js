@@ -9,7 +9,7 @@ const config = require("config")
 
 // @route GET api/auth
 // @desc Get user credentials (after verifying token through middleware)
-// @access Public
+// @access Private
 router.get("/", auth, async (req, res) => {
 	try {
 		const user = await User.findById(req.user.id).select("-password")
