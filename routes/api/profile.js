@@ -289,6 +289,9 @@ router.put(
 
 router.delete("/experience/:exp_id", auth, async (req, res) => {
 	try {
+		// Remove user posts
+		await Post.deleteMany({ user: req.user.id })
+
 		const profile = await Profile.findOne({ user: req.user.id })
 
 		const removeIndex = profile.experience
