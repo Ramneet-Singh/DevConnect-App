@@ -275,8 +275,10 @@ router.put(
 
 			profile.experience[updateIndex] = expFields
 
-			await profile.save()
-			res.json(profile)
+			await Profile.updateOne({ user: req.user.id }, profile)
+			const newProfile = await Profile.findOne({ user: req.user.id })
+
+			res.json(newProfile)
 		} catch (err) {
 			console.error(err.message)
 			res.status(500).send("Server error")
@@ -418,8 +420,10 @@ router.put(
 				return item._id.toString() === req.params.edu_id ? eduFields : item
 			})
 
-			await profile.save()
-			res.json(profile)
+			await Profile.updateOne({ user: req.user.id }, profile)
+
+			const newProfile = await Profile.findOne({ user: req.user.id })
+			res.json(newProfile)
 		} catch (err) {
 			console.error(err.message)
 			res.status(500).send("Server error")

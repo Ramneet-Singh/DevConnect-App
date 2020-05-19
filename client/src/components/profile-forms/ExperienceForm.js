@@ -135,7 +135,12 @@ const ExperienceForm = ({
 		addExperience(formData, history, exp_id ? exp_id : "")
 	}
 
-	return (
+	return !loading &&
+		currentProfile.experience !== null &&
+		exp_id &&
+		!currentProfile.experience.find((exp) => exp._id.toString() === exp_id) ? (
+		<span>Resource not found...</span>
+	) : (
 		<Fragment>
 			<h1 className="large text-primary">
 				{exp_id ? "Edit" : "Add"} An Experience

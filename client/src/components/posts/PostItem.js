@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import Moment from "react-moment"
@@ -11,6 +11,7 @@ const PostItem = ({
 	addLike,
 	removeLike,
 	deletePost,
+	showActions,
 }) => {
 	return (
 		<div className="post bg-white p-1 my-1">
@@ -25,71 +26,75 @@ const PostItem = ({
 				<p className="post-date">
 					Posted on <Moment date={date} format="YYYY/MM/DD" />
 				</p>
-				<button
-					type="button"
-					className={
-						likes.some(
-							(like) => like.user.toString() === auth.user._id.toString()
-						)
-							? "btn btn-primary"
-							: "btn btn-light"
-					}
-					disabled={likes.some(
-						(like) => like.user.toString() === auth.user._id.toString()
-					)}
-					onClick={() => addLike(_id)}
-				>
-					<i className="fas fa-thumbs-up"></i>
-					{likes.length > 0 && <span> {likes.length}</span>}
-				</button>
-				<button
-					type="button"
-					className={
-						!likes.some(
-							(like) => like.user.toString() === auth.user._id.toString()
-						)
-							? "btn"
-							: "btn btn-light"
-					}
-					style={
-						!likes.some(
-							(like) => like.user.toString() === auth.user._id.toString()
-						)
-							? {
-									color: "#888888",
-							  }
-							: {}
-					}
-					disabled={
-						!likes.some(
-							(like) => like.user.toString() === auth.user._id.toString()
-						)
-					}
-					onClick={() => removeLike(_id)}
-				>
-					<i className="fas fa-thumbs-down"></i>
-				</button>
-				<Link to={`/posts/${_id}`} className="btn btn-primary">
-					Discussion{" "}
-					{comments.length > 0 && (
-						<span className="comment-count"> {comments.length}</span>
-					)}
-				</Link>
-				{!auth.loading && auth.user._id.toString() === user.toString() && (
-					<button
-						type="button"
-						className="btn btn-danger"
-						onClick={() => {
-							if (
-								window.confirm("Are you sure you want to delete this post?")
-							) {
-								window.scrollTo(0, 0)
-								deletePost(_id)
+				{showActions && (
+					<Fragment>
+						<button
+							type="button"
+							className={
+								likes.some(
+									(like) => like.user.toString() === auth.user._id.toString()
+								)
+									? "btn btn-primary"
+									: "btn btn-light"
 							}
-						}}
-					>
-						<i className="fas fa-times"></i>
-					</button>
+							disabled={likes.some(
+								(like) => like.user.toString() === auth.user._id.toString()
+							)}
+							onClick={() => addLike(_id)}
+						>
+							<i className="fas fa-thumbs-up"></i>
+							{likes.length > 0 && <span> {likes.length}</span>}
+						</button>
+						<button
+							type="button"
+							className={
+								!likes.some(
+									(like) => like.user.toString() === auth.user._id.toString()
+								)
+									? "btn"
+									: "btn btn-light"
+							}
+							style={
+								!likes.some(
+									(like) => like.user.toString() === auth.user._id.toString()
+								)
+									? {
+											color: "#888888",
+									  }
+									: {}
+							}
+							disabled={
+								!likes.some(
+									(like) => like.user.toString() === auth.user._id.toString()
+								)
+							}
+							onClick={() => removeLike(_id)}
+						>
+							<i className="fas fa-thumbs-down"></i>
+						</button>
+						<Link to={`/posts/${_id}`} className="btn btn-primary">
+							Discussion{" "}
+							{comments.length > 0 && (
+								<span className="comment-count"> {comments.length}</span>
+							)}
+						</Link>
+						{!auth.loading && auth.user._id.toString() === user.toString() && (
+							<button
+								type="button"
+								className="btn btn-danger"
+								onClick={() => {
+									if (
+										window.confirm("Are you sure you want to delete this post?")
+									) {
+										window.scrollTo(0, 0)
+										deletePost(_id)
+									}
+								}}
+							>
+								<i className="fas fa-times"></i>
+							</button>
+						)}
+					</Fragment>
 				)}
 			</div>
 		</div>
@@ -102,6 +107,11 @@ PostItem.propTypes = {
 	addLike: PropTypes.func.isRequired,
 	removeLike: PropTypes.func.isRequired,
 	deletePost: PropTypes.func.isRequired,
+	showActions: PropTypes.bool,
+}
+
+PostItem.defaultProps = {
+	showActions: true,
 }
 
 const mapStateToProps = (state) => ({

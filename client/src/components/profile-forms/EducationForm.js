@@ -142,7 +142,12 @@ const EducationForm = ({
 		addEducation(formData, history, edu_id ? edu_id : "")
 	}
 
-	return (
+	return !loading &&
+		currentProfile.education !== null &&
+		edu_id &&
+		!currentProfile.education.find((edu) => edu._id.toString() === edu_id) ? (
+		<span>Resource not found...</span>
+	) : (
 		<Fragment>
 			<h1 className="large text-primary">
 				{edu_id ? "Edit" : "Add"} Your Education

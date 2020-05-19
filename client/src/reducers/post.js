@@ -7,6 +7,9 @@ import {
 	POST_DELETED,
 	POST_ADDED,
 	GET_POST,
+	COMMENT_ADDED,
+	COMMENT_DELETED,
+	LOGOUT,
 } from "../actions/types"
 
 const initialState = {
@@ -46,6 +49,16 @@ export default (state = initialState, action) => {
 				loading: false,
 				posts: [payload, ...state.posts],
 			}
+		case COMMENT_ADDED:
+		case COMMENT_DELETED:
+			return {
+				...state,
+				loading: false,
+				post: {
+					...state.post,
+					comments: payload,
+				},
+			}
 		case POST_ERROR:
 			return {
 				...state,
@@ -72,6 +85,14 @@ export default (state = initialState, action) => {
 				...state,
 				post: null,
 				loading: false,
+			}
+		case LOGOUT:
+			return {
+				...state,
+				posts: [],
+				post: null,
+				loading: false,
+				error: {},
 			}
 		default:
 			return state
